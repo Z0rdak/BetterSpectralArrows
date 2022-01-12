@@ -1,0 +1,62 @@
+package de.z0rdak.bsa.config;
+
+import net.minecraftforge.common.ForgeConfigSpec;
+
+public final class SpectralArrowLightConfigBuilder {
+
+    private SpectralArrowLightConfigBuilder(){}
+
+    public static final ForgeConfigSpec CONFIG_SPEC;
+
+    public static final ForgeConfigSpec.ConfigValue<Integer> START_LIGHT_LVL;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LIGHT_DECAY_INTERVAL;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LIGHT_DECAY_STEP;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISCARD_ARROW;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> GLOW_INK_RECIPE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AMOUNT_GLOW_INK_REQUIRED;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> GLOW_BERRY_RECIPE;
+    public static final ForgeConfigSpec.ConfigValue<Integer> AMOUNT_GLOW_BERRY_REQUIRED;
+
+    static {
+        final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+
+        BUILDER.push("BetterSpectralArrows mod configuration").build();
+
+        START_LIGHT_LVL = BUILDER.comment("Start light level for generated light blocks.")
+                .translation("config.light.level")
+                .defineInRange("start_light_lvl", 15, 1, 15);
+
+        LIGHT_DECAY_INTERVAL = BUILDER.comment("Time interval in ticks for decreasing light level of the placed light blocks.\n -1 indicates forever")
+                .translation("config.light.decay.interval")
+                .defineInRange("decay_interval", 20, -1, Integer.MAX_VALUE);
+
+        LIGHT_DECAY_STEP = BUILDER.comment("Amount of levels to for decreasing the light level of placed light blocks.")
+                .translation("config.light.decay.step")
+                .defineInRange("decay_amount", 1, 1, 15);
+
+        DISCARD_ARROW = BUILDER.comment("Discard arrow after light block created")
+                .translation("config.light.discard")
+                .define("discard_arrows", true);
+
+        GLOW_INK_RECIPE = BUILDER.comment("Enable or disable crafting spectral arrows with glow ink")
+                .translation("config.crafting.arrow.glow-ink")
+                .define("craft_with_glow_ink", true);
+
+        AMOUNT_GLOW_INK_REQUIRED = BUILDER.comment("Amount of glow ink required for recipe")
+                .translation("config.crafting.arrow.glow-ink.amount")
+                .defineInRange("amount_glow_ink", 1, 1, 8);
+
+        GLOW_BERRY_RECIPE = BUILDER.comment("Enable or disable crafting spectral arrows with glow berries")
+                .translation("config.crafting.arrow.glow-berries")
+                .define("craft_with_glow_berries", true);
+
+        AMOUNT_GLOW_BERRY_REQUIRED = BUILDER.comment("Amount of glow berries required for recipe")
+                .translation("config.crafting.arrow.glow-berries.amount")
+                .defineInRange("amount_glow_berries", 2, 1, 8);
+
+        BUILDER.pop();
+        CONFIG_SPEC = BUILDER.build();
+    }
+
+
+}
