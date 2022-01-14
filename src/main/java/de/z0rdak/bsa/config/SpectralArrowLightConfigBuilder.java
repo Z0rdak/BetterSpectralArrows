@@ -1,5 +1,6 @@
 package de.z0rdak.bsa.config;
 
+import de.z0rdak.bsa.BetterSpectralArrows;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class SpectralArrowLightConfigBuilder {
@@ -58,5 +59,12 @@ public final class SpectralArrowLightConfigBuilder {
         CONFIG_SPEC = BUILDER.build();
     }
 
+    public static ForgeConfigSpec.ConfigValue<Boolean> getRecipeConfig(String configName){
+        return switch (configName) {
+            case "craft_with_glow_ink" -> GLOW_INK_RECIPE;
+            case "craft_with_glow_berries" -> GLOW_BERRY_RECIPE;
+            default -> null;
+        };
+    }
 
 }

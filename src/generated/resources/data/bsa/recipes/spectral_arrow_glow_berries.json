@@ -1,0 +1,33 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "isEnabled": false,
+          "configName": "craft_with_glow_berries",
+          "type": "bsa:boolean_config"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "group": "combat",
+        "ingredients": [
+          {
+            "item": "minecraft:glow_berries"
+          },
+          {
+            "item": "minecraft:glow_berries"
+          },
+          {
+            "item": "minecraft:arrow"
+          }
+        ],
+        "result": {
+          "item": "minecraft:spectral_arrow",
+          "count": 2
+        }
+      }
+    }
+  ]
+}

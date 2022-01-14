@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "isEnabled": true,
+          "configName": "craft_with_glow_ink",
+          "type": "bsa:boolean_config"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "group": "combat",
+        "ingredients": [
+          {
+            "item": "minecraft:glow_ink_sac"
+          },
+          {
+            "item": "minecraft:arrow"
+          }
+        ],
+        "result": {
+          "item": "minecraft:spectral_arrow",
+          "count": 2
+        }
+      }
+    }
+  ]
+}

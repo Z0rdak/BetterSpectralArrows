@@ -1,7 +1,7 @@
 package de.z0rdak.bsa.data;
 
 import de.z0rdak.bsa.BetterSpectralArrows;
-import de.z0rdak.bsa.config.ConfigCondition;
+import de.z0rdak.bsa.config.BooleanConfigCondition;
 import de.z0rdak.bsa.config.SpectralArrowLightConfigBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -9,18 +9,22 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.*;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 import java.util.function.Consumer;
 
+import static de.z0rdak.bsa.config.BooleanConfigCondition.*;
 import static net.minecraft.advancements.critereon.InventoryChangeTrigger.TriggerInstance.hasItems;
 import static net.minecraft.advancements.critereon.RecipeUnlockedTrigger.unlocked;
 
-@Mod.EventBusSubscriber(modid = BetterSpectralArrows.MOD_ID)
+@Mod.EventBusSubscriber(modid = BetterSpectralArrows.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class SpectralArrowRecipeProvider extends RecipeProvider implements IConditionBuilder {
 
     public SpectralArrowRecipeProvider(DataGenerator dataGen) {
@@ -29,38 +33,47 @@ public class SpectralArrowRecipeProvider extends RecipeProvider implements ICond
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        ResourceLocation spectralArrowRL = new ResourceLocation("minecraft", "spectral_arrow");
+        new ResourceLocation("bsa", "spectral_arrow_glow_ink");
 
         ConditionalRecipe.builder()
-                .addCondition(new ConfigCondition(SpectralArrowLightConfigBuilder.GLOW_INK_RECIPE))
+                .addCondition(ofConfig(SpectralArrowLightConfigBuilder.GLOW_INK_RECIPE))
                 .addRecipe(ShapelessRecipeBuilder
-                        .shapeless(Items.SPECTRAL_ARROW)
+                        .shapeless(Items.SPECTRAL_ARROW, 2)
                         .requires(Items.GLOW_INK_SAC, SpectralArrowLightConfigBuilder.AMOUNT_GLOW_INK_REQUIRED.get())
                         .requires(Items.ARROW)
-                        //.group("combat")
-                        .unlockedBy("has_item", hasItems(Items.GLOW_INK_SAC))
-                        .unlockedBy("has_recipe", unlocked(new ResourceLocation("minecraft:spectral_arrow")))
+                        .group("combat")
+                        //.unlockedBy("has_item", has(Items.GLOW_INK_SAC))
+                        //.unlockedBy("has_recipe", unlocked(new ResourceLocation("minecraft:spectral_arrow")))
                         ::save)
-                .build(consumer, spectralArrowRL);
+                .build(consumer, new ResourceLocation("bsa", "spectral_arrow_glow_ink"));
 
         ConditionalRecipe.builder()
-                .addCondition(new ConfigCondition(SpectralArrowLightConfigBuilder.GLOW_BERRY_RECIPE))
+                .addCondition(ofConfig(SpectralArrowLightConfigBuilder.GLOW_BERRY_RECIPE))
                 .addRecipe(ShapelessRecipeBuilder
-                        .shapeless(Items.SPECTRAL_ARROW)
+                        .shapeless(Items.SPECTRAL_ARROW, 2)
                         .requires(Items.GLOW_BERRIES, SpectralArrowLightConfigBuilder.AMOUNT_GLOW_BERRY_REQUIRED.get())
                         .requires(Items.ARROW)
-                        //.group("combat")
-                        .unlockedBy("has_recipe", unlocked(new ResourceLocation("minecraft:spectral_arrow")))
-                        .unlockedBy("has_item", hasItems(Items.GLOW_BERRIES))
+                        .group("combat")
+                        // TODO: fixme
+                        //.unlockedBy("has_recipe", unlocked(new ResourceLocation("minecraft:spectral_arrow")))
+                        //.unlockedBy("has_item", has(Items.GLOW_BERRIES))
                         ::save)
-                .build(consumer, spectralArrowRL);
+                .build(consumer, new ResourceLocation("bsa", "spectral_arrow_glow_berries"));
     }
 
     @SubscribeEvent
     public static void onDataGeneration(GatherDataEvent event){
+        CraftingHelper.register(Serializer.INSTANCE);
         DataGenerator dataGen = event.getGenerator();
         if (event.includeServer()){
             dataGen.addProvider(new SpectralArrowRecipeProvider(dataGen));
         }
     }
+
+    @SubscribeEvent
+    public void registerRecipeSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
+        CraftingHelper.register(Serializer.INSTANCE);
+    }
+
+
 }
