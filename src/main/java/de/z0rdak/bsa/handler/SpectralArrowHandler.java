@@ -82,26 +82,23 @@ public final class SpectralArrowHandler {
     }
 
     public static boolean setLightWithLevelAt(Level world, BlockPos pos, int lightLvl) {
-            BlockState lightBlockState = createLightLevelState(lightLvl);
-            BlockState blockToReplace = world.getBlockState(pos);
-            IntegerProperty waterLevelProperty = IntegerProperty.create("level", 0, 15);
-            if (blockToReplace.is(Blocks.WATER) && blockToReplace.getValue(waterLevelProperty).intValue() == 0) {
-                // set waterlogged state if block is water && is source block
-                lightBlockState = lightBlockState.setValue(waterlogged, true);
-                return world.setBlockAndUpdate(pos, lightBlockState);
-            }
-            if (world.getBlockState(pos).is(Blocks.AIR)) {
-                return world.setBlockAndUpdate(pos, lightBlockState);
-            }
+        BlockState lightBlockState = createLightLevelState(lightLvl);
+        BlockState blockToReplace = world.getBlockState(pos);
+        IntegerProperty waterLevelProperty = IntegerProperty.create("level", 0, 15);
+        if (blockToReplace.is(Blocks.WATER) && blockToReplace.getValue(waterLevelProperty).intValue() == 0) {
+            // set waterlogged state if block is water && is source block
+            lightBlockState = lightBlockState.setValue(waterlogged, true);
+            return world.setBlockAndUpdate(pos, lightBlockState);
+        }
+        if (world.getBlockState(pos).is(Blocks.AIR)) {
+            return world.setBlockAndUpdate(pos, lightBlockState);
+        }
         return false;
     }
 
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
         server = event.getServer();
-        server.getAllLevels().forEach(lvl -> {
-            SpectralArrowManager.get().init(lvl.dimension());
-        });
     }
 
 

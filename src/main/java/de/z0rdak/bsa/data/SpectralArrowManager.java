@@ -2,12 +2,17 @@ package de.z0rdak.bsa.data;
 
 import de.z0rdak.bsa.BetterSpectralArrows;
 import de.z0rdak.bsa.handler.SpectralArrowHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -60,22 +65,27 @@ public class SpectralArrowManager extends SavedData {
 //                 BetterSpectralArrows.LOGGER.info("Loaded " + data.().size() + " regions for " + data.getDimensionList().size() + " different dimensions");
             }
         } catch (NullPointerException npe) {
-            BetterSpectralArrows.LOGGER.error("Loading dimension regions failed");
+            BetterSpectralArrows.LOGGER.error("Loading dimension lights failed");
         }
     }
 
     public static SpectralArrowManager read(CompoundTag tagCompound) {
+        BetterSpectralArrows.LOGGER.info("Reading light data from world...");
         SpectralArrowManager manager = new SpectralArrowManager();
-        // TODO:
-        /*
-        ListTag tagList = tagCompound.getList(TAG_WAYSTONES, Tag.TAG_COMPOUND);
-        for (Tag tag : tagList) {
-            CompoundTag compound = (CompoundTag) tag;
-            IWaystone waystone = Waystone.read(compound);
-            waystoneManager.waystones.put(waystone.getWaystoneUid(), waystone);
-        }
-
-         */
+        CompoundTag dims = tagCompound.getCompound(TAG_BSA);
+        dims.getAllKeys().forEach(dim -> {
+            ResourceKey<Level> dimLevel = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(dim));
+            manager.init(dimLevel);
+            CompoundTag dimCompound = dims.getCompound(dim);
+            ListTag lights = dimCompound.getList("lights", ListTag.TAG_COMPOUND);
+            lights.forEach(lightTrackerTag -> {
+                CompoundTag lightTag = ((CompoundTag) lightTrackerTag);
+                CompoundTag posTag = lightTag.getCompound("pos");
+                BlockPos pos = new BlockPos(posTag.getInt("x"), posTag.getInt("y"), posTag.getInt("z"));
+                LightBlockTracker lightTracker = new LightBlockTracker(pos, lightTag.getInt("lightLvl"), lightTag.getLong("tickCount"));
+                manager.trackedLightBlocks.get(dimLevel).add(lightTracker);
+            });
+        });
         return manager;
     }
 
@@ -105,15 +115,17 @@ public class SpectralArrowManager extends SavedData {
         return tagCompound;
     }
 
-    public boolean trackLight(ResourceKey<Level> dim, LightBlockTracker light){
-         if (!trackedLightBlocks.containsKey(dim)) {
+    public boolean trackLight(ResourceKey<Level> dim, LightBlockTracker light) {
+        if (!trackedLightBlocks.containsKey(dim)) {
             lightBlocksToRemove.put(dim, new ArrayList<>());
             trackedLightBlocks.put(dim, new ArrayList<>());
         }
-        return trackedLightBlocks.get(dim).add(light);
+        boolean res = trackedLightBlocks.get(dim).add(light);
+        this.setDirty();
+        return res;
     }
 
-    public void init(ResourceKey<Level> dim){
+    public void init(ResourceKey<Level> dim) {
         trackedLightBlocks.put(dim, new ArrayList<>());
         lightBlocksToRemove.put(dim, new ArrayList<>());
     }
@@ -138,5 +150,6 @@ public class SpectralArrowManager extends SavedData {
         trackedLightBlocks.keySet().forEach(dim -> {
             lightBlocksToRemove.get(dim).clear();
         });
+        this.setDirty();
     }
 }
