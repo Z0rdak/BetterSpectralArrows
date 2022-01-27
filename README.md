@@ -56,7 +56,7 @@ It is also possible to make the placed light blocks last forever. This is done b
 The light blocks will still be tracked (don't worry about performance), but not removed.
 You can change to configuration again to make them start decaying again.
 
-### Arrow configuration
+### Arrow recipe configuration
 
 You are able to enable/disable the recipes to craft spectral arrows with glow berries or glow ink as well as tweak the amount required for crafting. 
 Additionally, you can configure if fired arrows are discarded instantly after a light block is created to tweak the balance.
@@ -74,6 +74,18 @@ craft_with_glow_berries = true
 #Range: 1 ~ 8
 amount_glow_berries = 2
 ```
+These configuration options are only used to generate the corresponding recipes. 
+After the recipe generation they are irrelevant. To disable/enable the recipes use the flag in the recipe file.
+
+```json
+...
+    {
+      "isEnabled": true,
+      "configName": "craft_with_glow_ink",
+      "type": "bsa:boolean_config"
+    }
+...
+```
 
 ## Issues
 
@@ -89,4 +101,5 @@ This mod is provided with the MIT License. Feel free to include this mod in any 
 
 ## FAQ
 
- - Will the mod be ported to versions <1.18? - No, that would mean that I would introduce a separate light block, which would result in the client having to install the mod as well.
+ - Q: Will the mod be ported to versions <1.18?
+ - A: No, that would mean that I would introduce a separate light block, which would result in the client having to install the mod as well.
