@@ -78,13 +78,11 @@ These configuration options are only used to generate the corresponding recipes.
 After the recipe generation they are irrelevant. To disable/enable the recipes use the flag in the recipe file.
 
 ```json
-...
     {
       "isEnabled": true,
       "configName": "craft_with_glow_ink",
       "type": "bsa:boolean_config"
     }
-...
 ```
 
 ## Issues
