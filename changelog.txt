@@ -1,0 +1,7 @@
+## 1.18.1-0.0.1.0
+* Add recipes to craft Spectral Arrows by using Glow Berries or Glow Ink Sacks
+* Spectral Arrows create a light block when hitting a solid block
+* Add configuration for light block properties
+* Add configuration for Spectral Arrows recipes
+* Add manager to track placed light blocks to allow light blocks to decay
+* Add english lang support

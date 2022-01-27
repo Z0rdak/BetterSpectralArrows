@@ -22,7 +22,7 @@ public final class SpectralArrowLightConfigBuilder {
     static {
         final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-        BUILDER.push("BetterSpectralArrows - light block config").build();
+        BUILDER.push("BetterSpectralArrows - Light Block config").build();
 
         START_LIGHT_LVL = BUILDER.comment("Start light level for generated light blocks.")
                 .translation("config.light.level")
@@ -33,7 +33,7 @@ public final class SpectralArrowLightConfigBuilder {
                 .defineInRange("decay_interval", 20, -1, Integer.MAX_VALUE);
 
         LIGHT_DECAY_STEP = BUILDER.comment("Amount of levels to for decreasing the light level of placed light blocks.")
-                .translation("config.light.decay.step")
+                .translation("config.light.decay.amount")
                 .defineInRange("decay_amount", 1, 1, 15);
 
         LIGHT_DECAY_CHANCE = BUILDER.comment("Chance for a light block to decay/reduce its light level.\n 1 indicates 100% decaying chance\n 0 indicates no decaying")
@@ -63,7 +63,7 @@ public final class SpectralArrowLightConfigBuilder {
         BUILDER.push("BetterSpectralArrows - Misc config");
 
         DISCARD_ARROW = BUILDER.comment("Discard arrow after light block created")
-                .translation("config.light.discard")
+                .translation("config.misc.arrow.discard")
                 .define("discard_arrows", true);
 
         CONFIG_SPEC = BUILDER.build();

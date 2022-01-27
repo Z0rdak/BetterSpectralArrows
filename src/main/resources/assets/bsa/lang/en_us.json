@@ -1,0 +1,11 @@
+{
+  "config.light.level": "Start light level for generated light blocks.",
+  "config.light.decay.interval": "Time interval in ticks for decreasing light level of the placed light blocks.\n -1 indicates forever",
+  "config.light.decay.amount": "Amount of levels to for decreasing the light level of placed light blocks.",
+  "config.light.decay.chance": "Chance for a light block to decay/reduce its light level.\n 1 indicates 100% decaying chance\n 0 indicates no decaying",
+  "config.crafting.arrow.glow-ink": "Enable or disable crafting spectral arrows with glow ink",
+  "config.crafting.arrow.glow-ink.amount": "Amount of glow ink required for recipe",
+  "config.crafting.arrow.glow-berries": "Enable or disable crafting spectral arrows with glow berries",
+  "config.crafting.arrow.glow-berries.amount": "Amount of glow berries required for recipe",
+  "config.misc.arrow.discard": "Discard arrow after light block created"
+}

@@ -34,7 +34,7 @@ public class BetterSpectralArrows
     * - Changelog
     * */
     public BetterSpectralArrows() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SpectralArrowLightConfigBuilder.CONFIG_SPEC, MOD_ID + ".arrow.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SpectralArrowLightConfigBuilder.CONFIG_SPEC, MOD_ID + ".toml");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(BetterSpectralArrows.class);
