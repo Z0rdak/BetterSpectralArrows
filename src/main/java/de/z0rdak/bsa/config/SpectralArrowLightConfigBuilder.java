@@ -12,6 +12,7 @@ public final class SpectralArrowLightConfigBuilder {
     public static final ForgeConfigSpec.ConfigValue<Integer> START_LIGHT_LVL;
     public static final ForgeConfigSpec.ConfigValue<Integer> LIGHT_DECAY_INTERVAL;
     public static final ForgeConfigSpec.ConfigValue<Integer> LIGHT_DECAY_STEP;
+    public static final ForgeConfigSpec.ConfigValue<Double> LIGHT_DECAY_CHANCE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISCARD_ARROW;
     public static final ForgeConfigSpec.ConfigValue<Boolean> GLOW_INK_RECIPE;
     public static final ForgeConfigSpec.ConfigValue<Integer> AMOUNT_GLOW_INK_REQUIRED;
@@ -21,7 +22,7 @@ public final class SpectralArrowLightConfigBuilder {
     static {
         final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-        BUILDER.push("BetterSpectralArrows mod configuration").build();
+        BUILDER.push("BetterSpectralArrows - light block config").build();
 
         START_LIGHT_LVL = BUILDER.comment("Start light level for generated light blocks.")
                 .translation("config.light.level")
@@ -35,9 +36,12 @@ public final class SpectralArrowLightConfigBuilder {
                 .translation("config.light.decay.step")
                 .defineInRange("decay_amount", 1, 1, 15);
 
-        DISCARD_ARROW = BUILDER.comment("Discard arrow after light block created")
-                .translation("config.light.discard")
-                .define("discard_arrows", true);
+        LIGHT_DECAY_CHANCE = BUILDER.comment("Chance for a light block to decay/reduce its light level.\n 1 indicates 100% decaying chance\n 0 indicates no decaying")
+                .translation("config.light.decay.chance")
+                .defineInRange("decay_chance", 1.0, 0.0, 1.0);
+
+        BUILDER.pop();
+        BUILDER.push("BetterSpectralArrows - Recipe config");
 
         GLOW_INK_RECIPE = BUILDER.comment("Enable or disable crafting spectral arrows with glow ink")
                 .translation("config.crafting.arrow.glow-ink")
@@ -56,6 +60,12 @@ public final class SpectralArrowLightConfigBuilder {
                 .defineInRange("amount_glow_berries", 2, 1, 8);
 
         BUILDER.pop();
+        BUILDER.push("BetterSpectralArrows - Misc config");
+
+        DISCARD_ARROW = BUILDER.comment("Discard arrow after light block created")
+                .translation("config.light.discard")
+                .define("discard_arrows", true);
+
         CONFIG_SPEC = BUILDER.build();
     }
 
