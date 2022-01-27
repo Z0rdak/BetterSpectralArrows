@@ -79,6 +79,10 @@ amount_glow_berries = 2
 
 Feel free to report any errors, issues, suggestions to [GitHub](https://github.com/Z0rdak/BetterSpectralArrows/issues). Please make sure to include your forge and mod version in your issue.
 
+### Known issues:
+
+- Arrows sometimes not creating light blocks when hitting a non-solid block/surface
+
 ## License & Permission
 
 This mod is provided with the MIT License. Feel free to include this mod in any modpack.
