@@ -15,7 +15,7 @@ Within the server side configuration you have the possibility to configure the p
 
 ### Light source configuration
 
- - Staring light level of placed light blocks
+ - Starting light level of placed light blocks
  - Decay interval in ticks (20 ticks -> ~1 second)
  - Decay amount: how many light levels to reduce for each interval
  - Decay chance: how many likely a light block will reduce its light level
