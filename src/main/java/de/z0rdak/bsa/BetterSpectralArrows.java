@@ -22,6 +22,17 @@ public class BetterSpectralArrows
     public static final String MOD_ID = "bsa";
     public static final Logger LOGGER = LogManager.getLogger();
 
+    /*
+    * Seems to work mostly
+    * TODOS:
+    * - Ensure server side functionality
+    * - Test configuration
+    * - Issue: Arrows don't consider non-full blocks light grass
+    * - Feature: Add flaming arrows setting fire?
+    * - Feature: Arrows stick for amount of ticks and de-spawn only after - when picked up, the light block is removed
+    * - Code cleanup
+    * - Changelog
+    * */
     public BetterSpectralArrows() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SpectralArrowLightConfigBuilder.CONFIG_SPEC, MOD_ID + ".arrow.toml");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
