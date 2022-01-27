@@ -18,11 +18,9 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
-@Mod.EventBusSubscriber(modid = BetterSpectralArrows.MOD_ID)
 public final class SpectralArrowHandler {
 
     private static MinecraftServer server;
@@ -58,7 +56,7 @@ public final class SpectralArrowHandler {
                 Level level = event.getEntity().getCommandSenderWorld();
                 BlockState blockToReplace = level.getBlockState(lightBlockPos);
                 if (!blockToReplace.is(Blocks.AIR) && !blockToReplace.is(Blocks.WATER)) {
-                    BetterSpectralArrows.LOGGER.info("Try to reduce light level for block != minecraft:light at " + lightBlockPos.toShortString());
+                    BetterSpectralArrows.LOGGER.debug("Try to reduce light level for block != minecraft:light at " + lightBlockPos.toShortString());
                     return;
                 }
                 boolean wasPlacedSuccessfully = setLightWithLevelAt(level, lightBlockPos, SpectralArrowLightConfigBuilder.START_LIGHT_LVL.get());
@@ -85,7 +83,7 @@ public final class SpectralArrowHandler {
         BlockState lightBlockState = createLightLevelState(lightLvl);
         BlockState blockToReplace = world.getBlockState(pos);
         IntegerProperty waterLevelProperty = IntegerProperty.create("level", 0, 15);
-        if (blockToReplace.is(Blocks.WATER) && blockToReplace.getValue(waterLevelProperty).intValue() == 0) {
+        if (blockToReplace.is(Blocks.WATER) && blockToReplace.getValue(waterLevelProperty) == 0) {
             // set waterlogged state if block is water && is source block
             lightBlockState = lightBlockState.setValue(waterlogged, true);
             return world.setBlockAndUpdate(pos, lightBlockState);
@@ -101,18 +99,22 @@ public final class SpectralArrowHandler {
         server = event.getServer();
     }
 
-
     public static void reduceLightLevel(ResourceKey<Level> dim, LightBlockTracker lightTracker) {
         Level level = server.getLevel(dim);
         if (level != null) {
             int reduceAmount = SpectralArrowLightConfigBuilder.LIGHT_DECAY_STEP.get();
+            double decayChance = SpectralArrowLightConfigBuilder.LIGHT_DECAY_CHANCE.get();
+            double threshold = ThreadLocalRandom.current().nextDouble();
+            if (decayChance < threshold) {
+                return;
+            }
             lightTracker.reduceLightLevel(reduceAmount);
             level.removeBlock(lightTracker.pos, true);
             setLightWithLevelAt(level, lightTracker.pos, lightTracker.lightLevel);
             BlockState newLightState = level.getBlockState(lightTracker.pos);
             if (isOut(lightTracker)) {
                 if (newLightState.hasProperty(waterlogged)) {
-                    level.setBlockAndUpdate(lightTracker.pos, newLightState.getValue(waterlogged).booleanValue()
+                    level.setBlockAndUpdate(lightTracker.pos, newLightState.getValue(waterlogged)
                             ? Blocks.WATER.defaultBlockState()
                             : Blocks.AIR.defaultBlockState());
                 }
