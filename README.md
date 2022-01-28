@@ -4,8 +4,8 @@ BetterSpectralArrows is a small, light-weight, vanilla+ style, server-side mod, 
 
 This mod has the aim to make exploring the new cases in Minecraft 1.18 more fun and easy.
 
-Each light source placed by a spectral arrow has its own time tracker (depending on the time of their placement). 
-Each light block will decay independently of the interval of the other light blocks.
+By default, the light blocks placed by the spectral arrows are subject to a decay mechanic.Their light level decreases over time until they disappear to balance this feature. Each light block placed by a spectral arrow has its own time tracker (depending on the time of their placement). 
+Each light block will decay independently of the interval of the other light blocks. The decaying properties of the light blocks can be adjusted with the configuration.
 
 To make Spectral Arrows more accessible early game, this mods adds two new recipes for crafting Spectral Arrows, using ingredients found in the new caves: **Glow Berries** and **Glow Ink Sacks**
 
@@ -78,11 +78,11 @@ These configuration options are only used to generate the corresponding recipes.
 After the recipe generation they are irrelevant. To disable/enable the recipes use the flag in the recipe file.
 
 ```json
-    {
-      "isEnabled": true,
-      "configName": "craft_with_glow_ink",
-      "type": "bsa:boolean_config"
-    }
+  {
+    "isEnabled": true,
+    "configName": "craft_with_glow_ink",
+    "type": "bsa:boolean_config"
+  }
 ```
 
 ## Issues
